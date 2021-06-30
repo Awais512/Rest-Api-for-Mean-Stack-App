@@ -6,6 +6,9 @@ const dotenv = require('dotenv');
 const connectDb = require('./db');
 dotenv.config();
 
+app.use(cors());
+app.options('*', cors());
+
 //Impoting Routes Files
 const productRoutes = require('./routes/productRoutes');
 
