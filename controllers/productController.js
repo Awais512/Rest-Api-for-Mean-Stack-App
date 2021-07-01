@@ -1,5 +1,6 @@
 const { Product } = require('../models/Product');
 const { Category } = require('../models/Category');
+const mongoose = require('mongoose');
 
 const asyncHandler = require('express-async-handler');
 
@@ -39,6 +40,8 @@ const getProducts = asyncHandler(async (req, res) => {
 //@desc     Get product By ID
 //@access   Public
 const getProduct = asyncHandler(async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id))
+    return res.status(400).send('Invalid Product ID');
   const product = await Product.findById(req.params.id).populate('category');
   if (!product) return res.status(404).json({ msg: 'Product Not Found' });
   res.status(200).json(product);
@@ -48,6 +51,8 @@ const getProduct = asyncHandler(async (req, res) => {
 //@desc     Update a product
 //@access   Private
 const updateProduct = asyncHandler(async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id))
+    return res.status(400).send('Invalid Product ID');
   const category = await Category.findById(req.body.category);
   if (!category) return res.status(404).json({ msg: 'Category Not Found' });
   const product = await Product.findByIdAndUpdate(
@@ -77,6 +82,8 @@ const updateProduct = asyncHandler(async (req, res) => {
 //@desc     Delete a product
 //@access   Private
 const deleteProduct = asyncHandler(async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id))
+    return res.status(400).send('Invalid Product ID');
   const product = await Product.findByIdAndRemove(req.params.id);
   if (!product)
     return res.status(404).json({ sucess: false, msg: 'Product not found' });
