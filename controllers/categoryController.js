@@ -34,7 +34,21 @@ const getCategory = asyncHandler(async (req, res) => {
 //@route    PUT /api/v1/categories/:id
 //@desc     Update a product
 //@access   Private
-const updateCategory = asyncHandler(async (req, res) => {});
+const updateCategory = asyncHandler(async (req, res) => {
+  const category = await Category.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: req.body.name,
+      icon: req.body.icon,
+      color: req.body.color,
+    },
+    { new: true }
+  );
+
+  if (!category)
+    return res.status(404).json({ sucess: false, msg: 'Category not found' });
+  res.status(200).json(category);
+});
 
 //@route    DELETE /api/v1/categories/:id
 //@desc     Delete a product
