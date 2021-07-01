@@ -31,7 +31,7 @@ const createProduct = asyncHandler(async (req, res) => {
 //@desc     Get all products
 //@access   Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find();
+  const products = await Product.find().populate('category');
   res.status(200).json(products);
 });
 
@@ -39,7 +39,7 @@ const getProducts = asyncHandler(async (req, res) => {
 //@desc     Get product By ID
 //@access   Public
 const getProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate('category');
   if (!product) return res.status(404).json({ msg: 'Product Not Found' });
   res.status(200).json(product);
 });
