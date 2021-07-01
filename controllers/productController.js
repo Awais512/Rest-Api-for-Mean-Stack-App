@@ -55,6 +55,14 @@ const getCountProducts = asyncHandler(async (req, res) => {
   res.status(200).json(productCount);
 });
 
+//@route    GET /api/v1/products/get/featured
+//@desc     Get Count of products
+//@access   Public
+const getFeaturedProducts = asyncHandler(async (req, res) => {
+  const featuredProducts = await Product.find({ isFeatured: true });
+  res.status(200).json(featuredProducts);
+});
+
 //@route    PUT /api/v1/products/:id
 //@desc     Update a product
 //@access   Private
@@ -103,6 +111,7 @@ module.exports = {
   getProducts,
   getProduct,
   getCountProducts,
+  getFeaturedProducts,
   updateProduct,
   deleteProduct,
 };
