@@ -1,10 +1,31 @@
 const { Product } = require('../models/Product');
+const { Category } = require('../models/Category');
+
 const asyncHandler = require('express-async-handler');
 
 //@route    POST /api/v1/products
 //@desc     Create New Product
 //@access   Private
-const createProduct = asyncHandler(async (req, res) => {});
+const createProduct = asyncHandler(async (req, res) => {
+  const category = await Category.findById(req.body.category);
+  if (!category) return res.status(404).json({ msg: 'Category Not Found' });
+
+  let product = new Product({
+    name: req.body.name,
+    description: req.body.description,
+    richDescription: req.body.richDescription,
+    image: req.body.image,
+    brand: req.body.brand,
+    price: req.body.price,
+    category: req.body.category,
+    countInStock: req.body.countInStock,
+    rating: req.body.rating,
+    numReviews: req.body.numReviews,
+    isFeatured: req.body.isFeatured,
+  });
+  product = await product.save();
+  res.send(product);
+});
 
 //@route    GET /api/v1/products
 //@desc     Get all products
