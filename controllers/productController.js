@@ -59,7 +59,10 @@ const getCountProducts = asyncHandler(async (req, res) => {
 //@desc     Get Count of products
 //@access   Public
 const getFeaturedProducts = asyncHandler(async (req, res) => {
-  const featuredProducts = await Product.find({ isFeatured: true });
+  const count = req.params.count ? req.params.count : 0;
+  const featuredProducts = await Product.find({ isFeatured: true }).limit(
+    +count
+  );
   res.status(200).json(featuredProducts);
 });
 
