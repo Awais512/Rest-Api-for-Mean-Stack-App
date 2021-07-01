@@ -11,6 +11,7 @@ app.options('*', cors());
 
 //Impoting Routes Files
 const productRoutes = require('./routes/productRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 //Database Connection
 connectDb();
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use('/api/v1/products', productRoutes);
+app.use('/api/v1/categories', categoryRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is listening on port: ${process.env.PORT}`);
