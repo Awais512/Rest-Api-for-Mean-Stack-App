@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const connectDb = require('./db');
+const authJwt = require('./helpers/jwt');
 dotenv.config();
 
 app.use(cors());
@@ -23,6 +24,7 @@ app.use(express.json());
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
+app.use(authJwt());
 
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/categories', categoryRoutes);
