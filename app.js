@@ -13,6 +13,7 @@ app.options('*', cors());
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 //Database Connection
 connectDb();
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is listening on port: ${process.env.PORT}`);
