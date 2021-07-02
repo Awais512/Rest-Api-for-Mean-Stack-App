@@ -32,7 +32,11 @@ const createProduct = asyncHandler(async (req, res) => {
 //@desc     Get all products
 //@access   Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find().populate('category');
+  let filter = {};
+  if (req.query.categories) {
+    filter = { category: req.query.categories.split(',') };
+  }
+  const products = await Product.find(filter).populate('category');
   res.status(200).json(products);
 });
 
