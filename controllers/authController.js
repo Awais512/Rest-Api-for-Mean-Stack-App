@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const asyncHandler = require('express-async-handler');
+const bcrypt = require('bcryptjs');
 
 //@route    POST /api/v1/auth/register
 //@desc     Register a User
@@ -8,7 +9,7 @@ const register = asyncHandler(async (req, res) => {
   let user = new User({
     name: req.body.name,
     email: req.body.email,
-    passwordHash: req.body.passwordHash,
+    passwordHash: bcrypt.hashSync(req.body.password, 10),
     phone: req.body.phone,
     isAdmin: req.body.isAdmin,
     street: req.body.street,
