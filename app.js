@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const connectDb = require('./db');
 const authJwt = require('./helpers/jwt');
+const errorHandler = require('./helpers/errorHandler');
 dotenv.config();
 
 app.use(cors());
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 app.use(authJwt());
+app.use(errorHandler);
 
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/categories', categoryRoutes);
