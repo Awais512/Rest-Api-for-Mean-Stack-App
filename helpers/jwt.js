@@ -12,8 +12,9 @@ function authJwt() {
       { url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS'] },
       { url: /\/api\/v1\/categories(.*)/, methods: ['GET', 'OPTIONS'] },
       { url: /\/api\/v1\/users(.*)/, methods: ['GET', 'OPTIONS'] },
-      `${api}/v1/auth/login`,
-      `${api}/v1/auth/register`,
+      { url: /\/api\/v1\/auth(.*)/, methods: ['POST', 'OPTIONS'] },
+      // `http://localhost:5000/v1/auth/login`,
+      // `${api}/v1/auth/register`,
     ],
   });
 }
