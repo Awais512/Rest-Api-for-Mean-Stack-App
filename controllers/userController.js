@@ -53,4 +53,15 @@ const updateUser = asyncHandler(async (req, res) => {
   res.send(user);
 });
 
-module.exports = { getUsers, getUser, updateUser };
+//@route      GET /api/v1/users/get/count
+//@desc       Get Single Users
+//@access     Public
+const getUserCount = asyncHandler(async (req, res) => {
+  const userCount = await User.countDocuments((count) => count);
+
+  res.send({
+    userCount: userCount,
+  });
+});
+
+module.exports = { getUsers, getUser, updateUser, getUserCount };
