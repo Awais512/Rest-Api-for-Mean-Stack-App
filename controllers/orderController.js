@@ -53,8 +53,32 @@ const createOrder = asyncHandler(async (req, res) => {
 //@desc       Get all Orders
 //@access     Public
 const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find();
+  const orders = await Order.find()
+    .populate('user', 'name')
+    .sort({ dateOrdered: -1 });
+
   res.status(200).json({ success: true, count: orders.length, orders });
 });
 
-module.exports = { createOrder, getAllOrders };
+//@route      GET /api/v1/orders/:id
+//@desc       Get Single Order
+//@access     Public
+const getSingleOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+    .populate('user', 'name')
+    .populate({
+      path: 'orderItems',
+      populate: {
+        path: 'product',
+        populate: 'category',
+      },
+    });
+
+  if (!order) {
+    return res.status(400).send('Order not found');
+  }
+
+  res.status(200).json({ success: true, count: order });
+});
+
+module.exports = { createOrder, getAllOrders, getSingleOrder };
