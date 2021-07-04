@@ -98,6 +98,9 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, order });
 });
 
+//@route      DELETE /api/v1/orders/:id
+//@desc       Delete Single Order
+//@access     Private
 const deleteOrder = asyncHandler((req, res) => {
   Order.findByIdAndRemove(req.params.id)
     .then(async (order) => {
@@ -119,10 +122,59 @@ const deleteOrder = asyncHandler((req, res) => {
     });
 });
 
+//@route      GET /api/v1/orders/get/sales
+//@desc       Get Single Order Status
+//@access     Public
+const getTotalSales = asyncHandler(async (req, res) => {
+  const totalSales = await Order.aggregate([
+    { $group: { _id: null, totalsales: { $sum: '$totalPrice' } } },
+  ]);
+
+  if (!totalSales) {
+    return res.status(400).send('The order sales cannot be generated');
+  }
+
+  res.send({ totalsales: totalSales.pop().totalsales });
+});
+
+//@route      GET /api/v1/orders/get/count
+//@desc       Get Single Order Status
+//@access     Public
+const getTotalCount = asyncHandler(async (req, res) => {
+  const orderCount = await Order.countDocuments((count) => count);
+
+  if (!orderCount) {
+    res.status(500).json({ success: false });
+  }
+  res.send({
+    orderCount: orderCount,
+  });
+});
+
+//@route      GET /api/v1/orders/:userid
+//@desc       Get Single Order Status
+//@access     Public
+const getUserOrders = asyncHandler(async (req, res) => {
+  const userOrderList = await Order.find({ user: req.params.userid })
+    .populate({
+      path: 'orderItems',
+      populate: {
+        path: 'product',
+        populate: 'category',
+      },
+    })
+    .sort({ dateOrdered: -1 });
+
+  res.status(200).json({ success: true, userOrderList });
+});
+
 module.exports = {
   createOrder,
   getAllOrders,
   getSingleOrder,
   updateOrderStatus,
   deleteOrder,
+  getTotalSales,
+  getTotalCount,
+  getUserOrders,
 };
