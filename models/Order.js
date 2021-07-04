@@ -57,7 +57,7 @@ const orderSchema = mongoose.Schema({
 //     virtuals: true,
 // });
 
-exports.Order = mongoose.model('Order', orderSchema);
+module.exports = mongoose.model('Order', orderSchema);
 
 /**
 Order Example:

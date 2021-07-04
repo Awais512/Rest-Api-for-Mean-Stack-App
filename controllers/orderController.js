@@ -1,5 +1,5 @@
-const { Order } = require('../models/Order');
-const { OrderItem } = require('../models/OrderItem');
+const Order = require('../models/Order');
+const OrderItem = require('../models/OrderItem');
 
 const asyncHandler = require('express-async-handler');
 
@@ -49,4 +49,12 @@ const createOrder = asyncHandler(async (req, res) => {
   res.send(order);
 });
 
-module.exports = { createOrder };
+//@route      GET /api/v1/orders
+//@desc       Get all Orders
+//@access     Public
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find();
+  res.status(200).send(orders);
+});
+
+module.exports = { createOrder, getAllOrders };
