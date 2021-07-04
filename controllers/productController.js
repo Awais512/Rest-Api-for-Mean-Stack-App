@@ -138,6 +138,29 @@ const deleteProduct = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, msg: 'Product deleted Successfully' });
 });
 
+const addGalleryImagesToProduct = asyncHandler(async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id))
+    return res.status(400).send('Invalid Product ID');
+
+  const files = req.files;
+  let imagesPaths = [];
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+  if (files) {
+    files.map((file) => {
+      imagesPaths.push(`${basePath}${file.filename}`);
+    });
+  }
+
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      images: imagesPaths,
+    },
+    { new: true }
+  );
+  res.status(200).json(product);
+});
+
 module.exports = {
   createProduct,
   getProducts,
@@ -146,4 +169,5 @@ module.exports = {
   getFeaturedProducts,
   updateProduct,
   deleteProduct,
+  addGalleryImagesToProduct,
 };

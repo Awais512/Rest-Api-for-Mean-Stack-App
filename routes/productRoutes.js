@@ -9,6 +9,7 @@ const {
   deleteProduct,
   getCountProducts,
   getFeaturedProducts,
+  addGalleryImagesToProduct,
 } = require('../controllers/productController');
 const router = express.Router();
 
@@ -42,5 +43,11 @@ router.route('/:id').get(getProduct).put(updateProduct).delete(deleteProduct);
 
 router.get('/get/count', getCountProducts);
 router.get('/get/featured/:count', getFeaturedProducts);
+
+router.put(
+  '/gallery/:id',
+  upload.array('images', 10),
+  addGalleryImagesToProduct
+);
 
 module.exports = router;
