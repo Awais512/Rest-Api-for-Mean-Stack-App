@@ -39,7 +39,11 @@ const upload = multer({ storage: storage });
 
 router.route('/').post(upload.single('image'), createProduct).get(getProducts);
 
-router.route('/:id').get(getProduct).put(updateProduct).delete(deleteProduct);
+router
+  .route('/:id')
+  .get(getProduct)
+  .put(upload.single('image'), updateProduct)
+  .delete(deleteProduct);
 
 router.get('/get/count', getCountProducts);
 router.get('/get/featured/:count', getFeaturedProducts);

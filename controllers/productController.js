@@ -103,13 +103,27 @@ const updateProduct = asyncHandler(async (req, res) => {
     return res.status(400).send('Invalid Product ID');
   const category = await Category.findById(req.body.category);
   if (!category) return res.status(404).json({ msg: 'Category Not Found' });
-  const product = await Product.findByIdAndUpdate(
+  const product = await Product.findById(req.params.id);
+  if (!product) return res.status(404).json({ msg: 'Product' });
+
+  const file = req.file;
+  let imagePath;
+
+  if (file) {
+    const fileName = req.file.filename;
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+    imagePath = `${basePath}${fileName}`;
+  } else {
+    imagePath = product.image;
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
     req.params.id,
     {
       name: req.body.name,
       description: req.body.description,
       richDescription: req.body.richDescription,
-      image: req.body.image,
+      image: imagePath,
       brand: req.body.brand,
       price: req.body.price,
       category: req.body.category,
@@ -121,9 +135,9 @@ const updateProduct = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  if (!product)
+  if (!updatedProduct)
     return res.status(404).json({ sucess: false, msg: 'Product not found' });
-  res.status(200).json({ success: true, product });
+  res.status(200).json({ success: true, updatedProduct });
 });
 
 //@route    DELETE /api/v1/products/:id
