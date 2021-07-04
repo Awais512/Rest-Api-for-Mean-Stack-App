@@ -42,7 +42,7 @@ const login = asyncHandler(async (req, res) => {
       secret,
       { expiresIn: '1d' }
     );
-    res.status(200).send({ user: user.email, token: token });
+    res.status(200).json({ user: user.email, token: token });
   } else {
     return res.status(400).send('Invalid Password');
   }

@@ -46,7 +46,7 @@ const createOrder = asyncHandler(async (req, res) => {
     user: req.body.user,
   });
   order = await order.save();
-  res.send(order);
+  res.json({ success: true, order });
 });
 
 //@route      GET /api/v1/orders
@@ -54,7 +54,7 @@ const createOrder = asyncHandler(async (req, res) => {
 //@access     Public
 const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find();
-  res.status(200).send(orders);
+  res.status(200).json({ success: true, count: orders.length, orders });
 });
 
 module.exports = { createOrder, getAllOrders };

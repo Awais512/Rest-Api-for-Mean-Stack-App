@@ -11,7 +11,7 @@ const createCategory = asyncHandler(async (req, res) => {
     color: req.body.color,
   });
   category = await category.save();
-  res.send(category);
+  res.status(200).json({ success: true, category });
 });
 
 //@route    GET /api/v1/categories
@@ -19,7 +19,7 @@ const createCategory = asyncHandler(async (req, res) => {
 //@access   Public
 const getCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find();
-  res.status(200).json(categories);
+  res.status(200).json({ count: categories.length, success: true, categories });
 });
 
 //@route    GET /api/v1/categories/:id
@@ -28,7 +28,7 @@ const getCategories = asyncHandler(async (req, res) => {
 const getCategory = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
   if (!category) return res.status(404).json({ msg: 'Category Not Found' });
-  res.status(200).json(category);
+  res.status(200).json({ success: true, category });
 });
 
 //@route    PUT /api/v1/categories/:id
@@ -47,7 +47,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 
   if (!category)
     return res.status(404).json({ sucess: false, msg: 'Category not found' });
-  res.status(200).json(category);
+  res.status(200).json({ success: true, category });
 });
 
 //@route    DELETE /api/v1/categories/:id

@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 //@access     Public
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select('-passwordHash');
-  res.status(200).json(users);
+  res.status(200).json({ count: users.length, success: true, users });
 });
 
 //@route      GET /api/v1/users/:id

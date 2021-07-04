@@ -25,7 +25,7 @@ const createProduct = asyncHandler(async (req, res) => {
     isFeatured: req.body.isFeatured,
   });
   product = await product.save();
-  res.send(product);
+  res.status(200).json({ success: true, product });
 });
 
 //@route    GET /api/v1/products
@@ -37,7 +37,7 @@ const getProducts = asyncHandler(async (req, res) => {
     filter = { category: req.query.categories.split(',') };
   }
   const products = await Product.find(filter).populate('category');
-  res.status(200).json(products);
+  res.status(200).json({ count: products.length, success: true, products });
 });
 
 //@route    GET /api/v1/products/:id
@@ -48,7 +48,7 @@ const getProduct = asyncHandler(async (req, res) => {
     return res.status(400).send('Invalid Product ID');
   const product = await Product.findById(req.params.id).populate('category');
   if (!product) return res.status(404).json({ msg: 'Product Not Found' });
-  res.status(200).json(product);
+  res.status(200).json({ success: true, product });
 });
 
 //@route    GET /api/v1/products/get/count
@@ -56,7 +56,7 @@ const getProduct = asyncHandler(async (req, res) => {
 //@access   Public
 const getCountProducts = asyncHandler(async (req, res) => {
   const productCount = await Product.countDocuments((count) => count);
-  res.status(200).json(productCount);
+  res.status(200).json({ success: true, productCount });
 });
 
 //@route    GET /api/v1/products/get/featured
@@ -67,7 +67,7 @@ const getFeaturedProducts = asyncHandler(async (req, res) => {
   const featuredProducts = await Product.find({ isFeatured: true }).limit(
     +count
   );
-  res.status(200).json(featuredProducts);
+  res.status(200).json({ success: true, featuredProducts });
 });
 
 //@route    PUT /api/v1/products/:id
@@ -98,7 +98,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   if (!product)
     return res.status(404).json({ sucess: false, msg: 'Product not found' });
-  res.status(200).json(product);
+  res.status(200).json({ success: true, product });
 });
 
 //@route    DELETE /api/v1/products/:id
