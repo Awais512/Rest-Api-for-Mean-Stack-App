@@ -30,9 +30,12 @@ const storage = multer.diskStorage({
 //@desc     Create New Product
 //@access   Private
 const createProduct = asyncHandler(async (req, res) => {
-  const category = await Category.findById(req.body.category);
-  if (!category) return res.status(404).json({ msg: 'Category Not Found' });
-
+  let category = await Category.findById(req.body.category);
+  if (!category) return res.status(400).send('Invalid Category');
+  const file = req.file;
+  if (!file) return res.status(400).send('No image in the request');
+  const fileName = req.file.filename;
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
   let product = new Product({
     name: req.body.name,
     description: req.body.description,
