@@ -19,7 +19,7 @@ const createCategory = asyncHandler(async (req, res) => {
 //@access   Public
 const getCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find();
-  res.status(200).json({ count: categories.length, success: true, categories });
+  res.status(200).send(categories);
 });
 
 //@route    GET /api/v1/categories/:id
